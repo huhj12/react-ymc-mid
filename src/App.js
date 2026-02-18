@@ -1,44 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useUser, useClerk } from '@clerk/clerk-react';
 import Bulletin from './pages/Bulletin';
 import Board from './pages/Board';
 import './App.css';
 
-const ADMIN_PASSWORD = 'church1234'; // 나중에 서버 인증으로 교체
-
 function App() {
+  const { isSignedIn } = useUser();
+  const { openSignIn } = useClerk();
   const [activeTab, setActiveTab] = useState('bulletin');
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [adminMode, setAdminMode] = useState(() => {
+    return localStorage.getItem('adminMode') === 'true';
+  });
+
+  // 로그인 상태 변경 시 adminMode 동기화
+  useEffect(() => {
+    if (!isSignedIn) {
+      setAdminMode(false);
+      localStorage.setItem('adminMode', 'false');
+    }
+  }, [isSignedIn]);
 
   const handleAdminClick = () => {
-    if (isAdmin) {
-      setIsAdmin(false);
+    if (!isSignedIn) {
+      openSignIn();
     } else {
-      setShowLoginModal(true);
-      setPassword('');
-      setLoginError('');
+      const next = !adminMode;
+      setAdminMode(next);
+      localStorage.setItem('adminMode', String(next));
     }
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAdmin(true);
-      setShowLoginModal(false);
-      setPassword('');
-      setLoginError('');
-    } else {
-      setLoginError('비밀번호가 올바르지 않습니다.');
-    }
-  };
-
-  const handleModalClose = () => {
-    setShowLoginModal(false);
-    setPassword('');
-    setLoginError('');
-  };
+  const isAdmin = isSignedIn && adminMode;
 
   return (
     <div className="App">
@@ -62,43 +54,14 @@ function App() {
               </button>
             </div>
             <button
-              className={`btn-admin-nav ${isAdmin ? 'active' : ''}`}
+              className={`btn-admin-nav ${isAdmin ? 'active' : isSignedIn ? 'off' : ''}`}
               onClick={handleAdminClick}
             >
-              {isAdmin ? '관리자 ON' : '관리자'}
+              {!isSignedIn ? '관리자' : isAdmin ? '관리자 ON' : '관리자 OFF'}
             </button>
           </div>
         </div>
       </nav>
-
-      {/* 관리자 로그인 모달 */}
-      {showLoginModal && (
-        <div className="modal-overlay" onClick={handleModalClose}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3 className="modal-title">관리자 인증</h3>
-            <p className="modal-desc">관리자 비밀번호를 입력하세요.</p>
-            <form onSubmit={handleLogin}>
-              <input
-                className="modal-input"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="비밀번호"
-                autoFocus
-              />
-              {loginError && <p className="modal-error">{loginError}</p>}
-              <div className="modal-actions">
-                <button type="button" className="modal-btn-cancel" onClick={handleModalClose}>
-                  취소
-                </button>
-                <button type="submit" className="modal-btn-confirm">
-                  로그인
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* 탭 콘텐츠 */}
       <main className="tab-content">
