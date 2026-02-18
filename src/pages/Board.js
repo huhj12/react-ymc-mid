@@ -3,12 +3,13 @@ import './Board.css';
 
 const API_URL = 'http://localhost:5000/api/posts';
 
-function Board() {
+function Board({ isAdmin }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState('list');
   const [selectedPost, setSelectedPost] = useState(null);
   const [newPost, setNewPost] = useState({ title: '', author: '', content: '' });
+  const [editPost, setEditPost] = useState({ title: '', content: '' });
 
   // 게시글 목록 불러오기
   const fetchPosts = useCallback(async () => {
@@ -91,6 +92,36 @@ function Board() {
     }
   };
 
+  const handleEdit = () => {
+    setEditPost({ title: selectedPost.title, content: selectedPost.content });
+    setView('edit');
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editPost.title.trim() || !editPost.content.trim()) {
+      alert('제목과 내용을 입력해주세요.');
+      return;
+    }
+    try {
+      const res = await fetch(`${API_URL}/${selectedPost._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editPost),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setSelectedPost(updated);
+        setPosts(posts.map(p => p._id === updated._id ? updated : p));
+        setView('detail');
+      } else {
+        alert('수정에 실패했습니다.');
+      }
+    } catch (err) {
+      alert('서버 연결에 실패했습니다.');
+    }
+  };
+
   const handleBack = () => {
     setView('list');
     setSelectedPost(null);
@@ -110,7 +141,7 @@ function Board() {
       <div className="board-container">
         <div className="board-header">
           <h2 className="board-title">게시판</h2>
-          <button className="btn-write" onClick={handleWrite}>글쓰기</button>
+          {isAdmin && <button className="btn-write" onClick={handleWrite}>글쓰기</button>}
         </div>
 
         <div className="board-stats">
@@ -173,8 +204,44 @@ function Board() {
         </div>
         <div className="detail-actions">
           <button className="btn-back" onClick={handleBack}>목록으로</button>
-          <button className="btn-delete" onClick={() => handleDelete(selectedPost._id)}>삭제</button>
+          {isAdmin && <button className="btn-edit" onClick={handleEdit}>수정</button>}
+          {isAdmin && <button className="btn-delete" onClick={() => handleDelete(selectedPost._id)}>삭제</button>}
         </div>
+      </div>
+    );
+  }
+
+  // 글 수정 화면
+  if (view === 'edit' && selectedPost) {
+    return (
+      <div className="board-container">
+        <h2 className="write-title">글 수정</h2>
+        <form className="write-form" onSubmit={handleEditSubmit}>
+          <div className="form-group">
+            <label htmlFor="edit-title">제목</label>
+            <input
+              id="edit-title"
+              type="text"
+              value={editPost.title}
+              onChange={(e) => setEditPost({ ...editPost, title: e.target.value })}
+              placeholder="제목을 입력하세요"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="edit-content">내용</label>
+            <textarea
+              id="edit-content"
+              value={editPost.content}
+              onChange={(e) => setEditPost({ ...editPost, content: e.target.value })}
+              placeholder="내용을 입력하세요"
+              rows={10}
+            />
+          </div>
+          <div className="form-actions">
+            <button type="button" className="btn-cancel" onClick={() => setView('detail')}>취소</button>
+            <button type="submit" className="btn-submit">저장</button>
+          </div>
+        </form>
       </div>
     );
   }

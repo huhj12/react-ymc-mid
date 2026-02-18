@@ -102,8 +102,12 @@ function App() {
 
       {/* 탭 콘텐츠 */}
       <main className="tab-content">
-        {activeTab === 'bulletin' && <Bulletin isAdmin={isAdmin} />}
-        {activeTab === 'board' && <Board />}
+        <div style={{ display: activeTab === 'bulletin' ? 'block' : 'none' }}>
+          <Bulletin isAdmin={isAdmin} />
+        </div>
+        <div style={{ display: activeTab === 'board' ? 'block' : 'none' }}>
+          <Board isAdmin={isAdmin} />
+        </div>
       </main>
     </div>
   );
