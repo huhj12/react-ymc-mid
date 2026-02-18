@@ -1,0 +1,294 @@
+.board-loading {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 16px;
+  color: #888;
+}
+
+.board-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 헤더 */
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.board-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.board-stats {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+/* 버튼 공통 */
+.btn-write {
+  padding: 10px 20px;
+  background-color: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-write:hover {
+  background-color: #5a6fd6;
+}
+
+/* 테이블 */
+.board-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.board-table thead th {
+  background-color: #667eea;
+  color: white;
+  padding: 12px 16px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.board-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #444;
+}
+
+.post-row {
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.post-row:hover {
+  background-color: #f8f9ff;
+}
+
+.col-no {
+  width: 60px;
+  text-align: center;
+}
+
+.col-title {
+  font-weight: 500;
+}
+
+.col-author {
+  width: 100px;
+  text-align: center;
+}
+
+.col-date {
+  width: 110px;
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+}
+
+.col-views {
+  width: 60px;
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 40px 0 !important;
+  color: #aaa;
+}
+
+/* 상세 화면 */
+.detail-header {
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.detail-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 12px 0;
+}
+
+.detail-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: #888;
+}
+
+.detail-content {
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-height: 200px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #444;
+}
+
+.detail-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-back {
+  padding: 10px 24px;
+  background-color: #f0f0f0;
+  color: #555;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-delete {
+  padding: 10px 24px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: #ee5a5a;
+}
+
+/* 글쓰기 화면 */
+.write-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
+}
+
+.write-form {
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  padding: 10px 24px;
+  background-color: #f0f0f0;
+  color: #555;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-submit {
+  padding: 10px 24px;
+  background-color: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+  background-color: #5a6fd6;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  .board-table thead th,
+  .board-table tbody td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .col-date,
+  .col-views {
+    display: none;
+  }
+
+  .detail-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
