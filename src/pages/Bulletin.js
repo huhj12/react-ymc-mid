@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Bulletin.css';
-
-const API_URL = 'http://localhost:5000/api/bulletin';
 
 const defaultData = {
   churchName: '사랑의 교회',
@@ -41,58 +39,6 @@ const defaultData = {
 
 function Bulletin({ isAdmin }) {
   const [data, setData] = useState(defaultData);
-  const [bulletinId, setBulletinId] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // DB에서 주보 데이터 불러오기
-  useEffect(() => {
-    const fetchBulletin = async () => {
-      try {
-        const res = await fetch(API_URL);
-        if (res.ok) {
-          const bulletin = await res.json();
-          setData(bulletin);
-          setBulletinId(bulletin._id);
-        }
-      } catch (err) {
-        console.log('서버 연결 실패, 기본 데이터 사용');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchBulletin();
-  }, []);
-
-  // 관리자 모드에서 저장
-  const handleSave = async () => {
-    try {
-      const { _id, __v, createdAt, updatedAt, ...body } = data;
-      let res;
-      if (bulletinId) {
-        res = await fetch(`${API_URL}/${bulletinId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
-      } else {
-        res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
-      }
-      if (res.ok) {
-        const saved = await res.json();
-        setData(saved);
-        setBulletinId(saved._id);
-        alert('저장되었습니다.');
-      } else {
-        alert('저장에 실패했습니다.');
-      }
-    } catch (err) {
-      alert('서버 연결에 실패했습니다.');
-    }
-  };
 
   // 기본 필드 변경
   const updateField = (field, value) => {
@@ -153,17 +99,12 @@ function Bulletin({ isAdmin }) {
     setData({ ...data, weeklySchedule: data.weeklySchedule.filter((_, i) => i !== index) });
   };
 
-  if (loading) {
-    return <div className="bulletin-loading">주보를 불러오는 중...</div>;
-  }
-
   return (
     <div className="bulletin-container">
-      {/* 관리자: 저장 버튼 */}
+      {/* 관리자: 편집 모드 표시 */}
       {isAdmin && (
         <div className="admin-save-bar">
           <span className="admin-badge">편집 모드</span>
-          <button className="btn-admin-save" onClick={handleSave}>DB에 저장</button>
         </div>
       )}
 

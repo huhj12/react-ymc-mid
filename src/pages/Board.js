@@ -1,49 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import './Board.css';
-
-const API_URL = 'http://localhost:5000/api/posts';
 
 function Board({ isAdmin }) {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [view, setView] = useState('list');
   const [selectedPost, setSelectedPost] = useState(null);
   const [newPost, setNewPost] = useState({ title: '', author: '', content: '' });
   const [editPost, setEditPost] = useState({ title: '', content: '' });
 
-  // 게시글 목록 불러오기
-  const fetchPosts = useCallback(async () => {
-    try {
-      const res = await fetch(API_URL);
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data);
-      }
-    } catch (err) {
-      console.log('서버 연결 실패');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
-
-  // 게시글 클릭 (상세 조회 + 조회수 증가)
-  const handlePostClick = async (post) => {
-    try {
-      const res = await fetch(`${API_URL}/${post._id}`);
-      if (res.ok) {
-        const data = await res.json();
-        setSelectedPost(data);
-        setView('detail');
-        // 목록의 조회수도 갱신
-        setPosts(posts.map(p => p._id === data._id ? data : p));
-      }
-    } catch (err) {
-      console.log('게시글 조회 실패');
-    }
+  // 게시글 클릭 (조회수 증가)
+  const handlePostClick = (post) => {
+    const updated = { ...post, views: post.views + 1 };
+    setPosts(posts.map(p => p.id === post.id ? updated : p));
+    setSelectedPost(updated);
+    setView('detail');
   };
 
   const handleWrite = () => {
@@ -52,44 +22,28 @@ function Board({ isAdmin }) {
   };
 
   // 게시글 등록
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!newPost.title.trim() || !newPost.author.trim() || !newPost.content.trim()) {
       alert('모든 항목을 입력해주세요.');
       return;
     }
-    try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newPost),
-      });
-      if (res.ok) {
-        await fetchPosts();
-        setView('list');
-      } else {
-        alert('등록에 실패했습니다.');
-      }
-    } catch (err) {
-      alert('서버 연결에 실패했습니다.');
-    }
+    const post = {
+      id: Date.now(),
+      ...newPost,
+      views: 0,
+      createdAt: new Date().toISOString(),
+    };
+    setPosts([post, ...posts]);
+    setView('list');
   };
 
   // 게시글 삭제
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
-    try {
-      const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        await fetchPosts();
-        setView('list');
-        setSelectedPost(null);
-      } else {
-        alert('삭제에 실패했습니다.');
-      }
-    } catch (err) {
-      alert('서버 연결에 실패했습니다.');
-    }
+    setPosts(posts.filter(p => p.id !== id));
+    setView('list');
+    setSelectedPost(null);
   };
 
   const handleEdit = () => {
@@ -97,29 +51,16 @@ function Board({ isAdmin }) {
     setView('edit');
   };
 
-  const handleEditSubmit = async (e) => {
+  const handleEditSubmit = (e) => {
     e.preventDefault();
     if (!editPost.title.trim() || !editPost.content.trim()) {
       alert('제목과 내용을 입력해주세요.');
       return;
     }
-    try {
-      const res = await fetch(`${API_URL}/${selectedPost._id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editPost),
-      });
-      if (res.ok) {
-        const updated = await res.json();
-        setSelectedPost(updated);
-        setPosts(posts.map(p => p._id === updated._id ? updated : p));
-        setView('detail');
-      } else {
-        alert('수정에 실패했습니다.');
-      }
-    } catch (err) {
-      alert('서버 연결에 실패했습니다.');
-    }
+    const updated = { ...selectedPost, ...editPost };
+    setPosts(posts.map(p => p.id === updated.id ? updated : p));
+    setSelectedPost(updated);
+    setView('detail');
   };
 
   const handleBack = () => {
@@ -130,10 +71,6 @@ function Board({ isAdmin }) {
   const formatDate = (dateStr) => {
     return dateStr ? dateStr.substring(0, 10) : '';
   };
-
-  if (loading) {
-    return <div className="board-loading">게시판을 불러오는 중...</div>;
-  }
 
   // 글 목록 화면
   if (view === 'list') {
@@ -167,7 +104,7 @@ function Board({ isAdmin }) {
               </tr>
             ) : (
               posts.map((post, index) => (
-                <tr key={post._id} onClick={() => handlePostClick(post)} className="post-row">
+                <tr key={post.id} onClick={() => handlePostClick(post)} className="post-row">
                   <td className="col-no">{posts.length - index}</td>
                   <td className="col-title">{post.title}</td>
                   <td className="col-author">{post.author}</td>
@@ -205,7 +142,7 @@ function Board({ isAdmin }) {
         <div className="detail-actions">
           <button className="btn-back" onClick={handleBack}>목록으로</button>
           {isAdmin && <button className="btn-edit" onClick={handleEdit}>수정</button>}
-          {isAdmin && <button className="btn-delete" onClick={() => handleDelete(selectedPost._id)}>삭제</button>}
+          {isAdmin && <button className="btn-delete" onClick={() => handleDelete(selectedPost.id)}>삭제</button>}
         </div>
       </div>
     );
