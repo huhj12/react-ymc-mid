@@ -37,7 +37,7 @@ function App() {
       {/* 상단 네비게이션 */}
       <nav className="tab-nav">
         <div className="tab-nav-inner">
-          <span className="app-logo">✝ 교회 웹앱</span>
+          <span className="app-logo">용인중앙교회 퓰라 학생회</span>
           <div className="tab-nav-right">
             <div className="tab-buttons">
               <button
