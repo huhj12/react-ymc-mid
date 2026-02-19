@@ -41,19 +41,17 @@ function Bulletin({ isAdmin }) {
   const [data, setData] = useState(defaultData);
   const [bulletinId, setBulletinId] = useState(null);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-
   const handleSaveToDb = async () => {
     try {
       let res;
       if (bulletinId) {
-        res = await fetch(`${API_URL}/api/bulletin/${bulletinId}`, {
+        res = await fetch(`/api/bulletin/${bulletinId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
       } else {
-        res = await fetch(`${API_URL}/api/bulletin`, {
+        res = await fetch('/api/bulletin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
