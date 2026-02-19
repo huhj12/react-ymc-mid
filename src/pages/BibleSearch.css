@@ -143,6 +143,14 @@
   color: #aaa;
 }
 
+.bible-check-all {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #667eea;
+  flex-shrink: 0;
+}
+
 .bible-copy-btn {
   margin-left: auto;
   padding: 5px 14px;
@@ -161,6 +169,77 @@
   color: white;
 }
 
+.bible-copy-selected-btn {
+  margin-left: 0;
+  background: #667eea;
+  color: white;
+}
+
+.bible-copy-selected-btn:hover {
+  background: #5a6fd6;
+}
+
+.bible-deselect-btn {
+  padding: 5px 14px;
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bible-deselect-btn:hover {
+  background: #fff0f0;
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.bible-range-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.bible-range-input {
+  padding: 7px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  width: 180px;
+  transition: border-color 0.2s;
+}
+
+.bible-range-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.bible-range-btn {
+  padding: 7px 14px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.bible-range-btn:hover {
+  background: #5a6fd6;
+}
+
+.bible-range-hint {
+  font-size: 12px;
+  color: #aaa;
+}
+
 .bible-verse-list {
   list-style: none;
   margin: 0;
@@ -176,6 +255,21 @@
   align-items: flex-start;
   padding: 8px 4px;
   border-bottom: 1px solid #f5f5f5;
+  transition: background-color 0.1s;
+}
+
+.bible-verse-item.checked {
+  background: #f0f2ff;
+  border-radius: 6px;
+}
+
+.bible-verse-check {
+  width: 15px;
+  height: 15px;
+  margin-top: 6px;
+  cursor: pointer;
+  accent-color: #667eea;
+  flex-shrink: 0;
 }
 
 .bible-verse-item:last-child {

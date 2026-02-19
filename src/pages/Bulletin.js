@@ -41,26 +41,33 @@ function Bulletin({ isAdmin }) {
   const [data, setData] = useState(defaultData);
   const [bulletinId, setBulletinId] = useState(null);
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const handleSaveToDb = async () => {
     try {
+      let res;
       if (bulletinId) {
-        await fetch(`http://localhost:5000/api/bulletin/${bulletinId}`, {
+        res = await fetch(`${API_URL}/api/bulletin/${bulletinId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
       } else {
-        const res = await fetch('http://localhost:5000/api/bulletin', {
+        res = await fetch(`${API_URL}/api/bulletin`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
-        const saved = await res.json();
-        setBulletinId(saved._id);
       }
+      const result = await res.json();
+      if (!res.ok) {
+        alert('저장 실패: ' + (result.message || res.status));
+        return;
+      }
+      if (!bulletinId) setBulletinId(result._id);
       alert('DB에 저장되었습니다.');
     } catch (err) {
-      alert('저장에 실패했습니다.');
+      alert('서버에 연결할 수 없습니다. 백엔드 서버가 실행 중인지 확인하세요.\n(' + err.message + ')');
     }
   };
 
