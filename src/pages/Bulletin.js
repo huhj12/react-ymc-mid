@@ -39,6 +39,30 @@ const defaultData = {
 
 function Bulletin({ isAdmin }) {
   const [data, setData] = useState(defaultData);
+  const [bulletinId, setBulletinId] = useState(null);
+
+  const handleSaveToDb = async () => {
+    try {
+      if (bulletinId) {
+        await fetch(`http://localhost:5000/api/bulletin/${bulletinId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+      } else {
+        const res = await fetch('http://localhost:5000/api/bulletin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const saved = await res.json();
+        setBulletinId(saved._id);
+      }
+      alert('DB에 저장되었습니다.');
+    } catch (err) {
+      alert('저장에 실패했습니다.');
+    }
+  };
 
   // 기본 필드 변경
   const updateField = (field, value) => {
@@ -105,6 +129,7 @@ function Bulletin({ isAdmin }) {
       {isAdmin && (
         <div className="admin-save-bar">
           <span className="admin-badge">편집 모드</span>
+          <button className="btn-admin-save" onClick={handleSaveToDb}>DB 저장</button>
         </div>
       )}
 
