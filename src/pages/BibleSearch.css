@@ -1,0 +1,376 @@
+.bible-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.bible-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
+}
+
+/* 모드 탭 */
+.bible-mode-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #eee;
+}
+
+.bible-mode-btn {
+  padding: 10px 24px;
+  background: transparent;
+  color: #888;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.bible-mode-btn:hover {
+  color: #667eea;
+}
+
+.bible-mode-btn.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+/* 섹션 */
+.bible-section {
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 책 선택 행 */
+.bible-book-select-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bible-select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  min-width: 130px;
+}
+
+.bible-select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.bible-book-info {
+  font-size: 13px;
+  color: #888;
+}
+
+/* 장 버튼 */
+.bible-chapter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #f8f9ff;
+  border-radius: 8px;
+}
+
+.bible-chapter-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  color: #555;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bible-chapter-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+  background: #f0f2ff;
+}
+
+.bible-chapter-btn.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+  font-weight: 700;
+}
+
+/* 구절 결과 */
+.bible-verse-result {
+  margin-top: 4px;
+}
+
+.bible-verse-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bible-verse-count {
+  font-size: 12px;
+  font-weight: 400;
+  color: #aaa;
+}
+
+.bible-copy-btn {
+  margin-left: auto;
+  padding: 5px 14px;
+  background: #f0f2ff;
+  color: #667eea;
+  border: 1px solid #667eea;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bible-copy-btn:hover {
+  background: #667eea;
+  color: white;
+}
+
+.bible-verse-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bible-verse-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 8px 4px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.bible-verse-item:last-child {
+  border-bottom: none;
+}
+
+.bible-verse-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  background: #667eea;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.bible-verse-text {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.7;
+  flex: 1;
+}
+
+.bible-verse-copy-btn {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  background: transparent;
+  color: #bbb;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.bible-verse-copy-btn:hover {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+/* 키워드 검색 */
+.bible-search-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.bible-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: border-color 0.2s;
+}
+
+.bible-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.bible-btn-search {
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.bible-btn-search:hover {
+  background: #5a6fd6;
+}
+
+.bible-result-header {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #f8f9ff;
+  border-radius: 6px;
+}
+
+.bible-empty {
+  text-align: center;
+  padding: 40px 0;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.bible-result-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bible-result-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+  transition: background-color 0.15s;
+}
+
+.bible-result-item:hover {
+  background-color: #f8f9ff;
+}
+
+.bible-ref {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  min-width: 100px;
+}
+
+.bible-text {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.bible-pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 20px;
+}
+
+.bible-page-btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  color: #555;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bible-page-btn:hover:not(:disabled) {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.bible-page-btn.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+  font-weight: 700;
+}
+
+.bible-page-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.highlight {
+  background: #fff3cd;
+  color: #c77700;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  .bible-chapter-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .bible-verse-text {
+    font-size: 14px;
+  }
+}

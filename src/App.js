@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import Bulletin from './pages/Bulletin';
 import Board from './pages/Board';
+import BibleSearch from './pages/BibleSearch';
 import './App.css';
 
 function App() {
@@ -52,6 +53,12 @@ function App() {
               >
                 게시판
               </button>
+              <button
+                className={`tab-btn ${activeTab === 'bible' ? 'active' : ''}`}
+                onClick={() => setActiveTab('bible')}
+              >
+                성경 검색
+              </button>
             </div>
             <button
               className={`btn-admin-nav ${isAdmin ? 'active' : isSignedIn ? 'off' : ''}`}
@@ -70,6 +77,9 @@ function App() {
         </div>
         <div style={{ display: activeTab === 'board' ? 'block' : 'none' }}>
           <Board isAdmin={isAdmin} />
+        </div>
+        <div style={{ display: activeTab === 'bible' ? 'block' : 'none' }}>
+          <BibleSearch />
         </div>
       </main>
     </div>
