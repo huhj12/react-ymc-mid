@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Bulletin.css';
 
 const defaultData = {
@@ -40,6 +40,24 @@ const defaultData = {
 function Bulletin({ isAdmin }) {
   const [data, setData] = useState(defaultData);
   const [bulletinId, setBulletinId] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/bulletin')
+      .then((res) => {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then((saved) => {
+        if (saved && saved._id) {
+          const { _id, __v, createdAt, updatedAt, ...fields } = saved;
+          setData(fields);
+          setBulletinId(_id);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleSaveToDb = async () => {
     try {
@@ -127,6 +145,8 @@ function Bulletin({ isAdmin }) {
   const removeSchedule = (index) => {
     setData({ ...data, weeklySchedule: data.weeklySchedule.filter((_, i) => i !== index) });
   };
+
+  if (loading) return <div className="bulletin-loading">주보를 불러오는 중...</div>;
 
   return (
     <div className="bulletin-container">

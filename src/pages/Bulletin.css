@@ -1,3 +1,10 @@
+.bulletin-loading {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 16px;
+  color: #888;
+}
+
 .bulletin-container {
   max-width: 700px;
   margin: 0 auto;
