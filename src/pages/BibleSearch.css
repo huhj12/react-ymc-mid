@@ -123,18 +123,27 @@
 /* 구절 결과 */
 .bible-verse-result {
   margin-top: 4px;
+  max-height: 70vh;
+  overflow-y: auto;
+  position: relative;
+  padding-right: 4px;
 }
 
 .bible-verse-header {
   font-size: 16px;
   font-weight: 700;
   color: #333;
-  margin-bottom: 12px;
   padding-bottom: 10px;
   border-bottom: 2px solid #eee;
   display: flex;
   align-items: center;
   gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  padding-top: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.04);
 }
 
 .bible-verse-count {
@@ -203,6 +212,12 @@
   gap: 8px;
   margin-bottom: 12px;
   flex-wrap: wrap;
+  position: sticky;
+  top: 53px;
+  z-index: 9;
+  background: #fff;
+  padding: 6px 0 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
 }
 
 .bible-range-input {
