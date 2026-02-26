@@ -19,11 +19,6 @@ const getBookByName = (name) => bibleBooks.find((book) => book.name === name) ||
 const getChapters = (book) => Object.keys((book && book.chapters) || {});
 const getVerses = (book, chapter) => Object.keys((book && book.chapters && book.chapters[chapter]) || {});
 
-const formatScriptureRef = (ref) => {
-  if (!ref || !ref.book) return '';
-  return `${ref.book} ${ref.startChapter}:${ref.startVerse}-${ref.endChapter}:${ref.endVerse}`;
-};
-
 const parseScriptureRef = (text) => {
   if (!text) return { ...defaultScriptureRef };
   const trimmed = text.trim();
