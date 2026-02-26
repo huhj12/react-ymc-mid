@@ -18,6 +18,13 @@ const bulletinSchema = new mongoose.Schema({
   worshipTitle: { type: String, required: true },
   sermonTitle: { type: String, required: true },
   scripture: { type: String, required: true },
+  scriptureRef: {
+    book: { type: String, default: '창세기' },
+    startChapter: { type: String, default: '1' },
+    startVerse: { type: String, default: '1' },
+    endChapter: { type: String, default: '1' },
+    endVerse: { type: String, default: '1' },
+  },
   pastor: { type: String, required: true },
   orderOfWorship: [worshipItemSchema],
   announcements: [String],

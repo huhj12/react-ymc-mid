@@ -1,5 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import './Bulletin.css';
+import bibleData from '../data/bible.json';
+
+const bibleBooks = [
+  ...(bibleData['구약'] || []),
+  ...(bibleData['신약'] || []),
+];
+
+const defaultScriptureRef = {
+  book: '창세기',
+  startChapter: '1',
+  startVerse: '1',
+  endChapter: '1',
+  endVerse: '1',
+};
+
+const getBookByName = (name) => bibleBooks.find((book) => book.name === name) || bibleBooks[0];
+const getChapters = (book) => Object.keys((book && book.chapters) || {});
+const getVerses = (book, chapter) => Object.keys((book && book.chapters && book.chapters[chapter]) || {});
+
+const formatScriptureRef = (ref) => {
+  if (!ref || !ref.book) return '';
+  return `${ref.book} ${ref.startChapter}:${ref.startVerse}-${ref.endChapter}:${ref.endVerse}`;
+};
+
+const parseScriptureRef = (text) => {
+  if (!text) return { ...defaultScriptureRef };
+  const trimmed = text.trim();
+  const matchedBook = bibleBooks.find((b) => trimmed.startsWith(b.name));
+  if (!matchedBook) return { ...defaultScriptureRef };
+  const rest = trimmed.slice(matchedBook.name.length).trim();
+  const match = rest.match(/(\d+)\s*:\s*(\d+)\s*-\s*(\d+)\s*:\s*(\d+)/);
+  if (!match) return { ...defaultScriptureRef, book: matchedBook.name };
+  return {
+    book: matchedBook.name,
+    startChapter: match[1],
+    startVerse: match[2],
+    endChapter: match[3],
+    endVerse: match[4],
+  };
+};
+
+const comparePosition = (aChapter, aVerse, bChapter, bVerse) => {
+  const aC = Number(aChapter);
+  const aV = Number(aVerse);
+  const bC = Number(bChapter);
+  const bV = Number(bVerse);
+  if (aC !== bC) return aC - bC;
+  return aV - bV;
+};
+
+const collectPassage = (ref) => {
+  if (!ref || !ref.book) return [];
+  const book = getBookByName(ref.book);
+  if (!book) return [];
+  const chapters = getChapters(book).map((c) => Number(c)).sort((a, b) => a - b);
+  const startC = Number(ref.startChapter);
+  const endC = Number(ref.endChapter);
+  const startV = Number(ref.startVerse);
+  const endV = Number(ref.endVerse);
+  const lines = [];
+
+  for (const c of chapters) {
+    if (c < startC || c > endC) continue;
+    const chapterKey = String(c);
+    const verseKeys = getVerses(book, chapterKey).map((v) => Number(v)).sort((a, b) => a - b);
+    for (const v of verseKeys) {
+      const isBeforeStart = comparePosition(c, v, startC, startV) < 0;
+      const isAfterEnd = comparePosition(c, v, endC, endV) > 0;
+      if (isBeforeStart || isAfterEnd) continue;
+      const text = book.chapters[chapterKey][String(v)];
+      lines.push(`${c}:${v} ${text}`);
+    }
+  }
+  return lines;
+};
 
 const defaultData = {
   churchName: '사랑의 교회',
@@ -7,6 +82,7 @@ const defaultData = {
   worshipTitle: '주일 예배',
   sermonTitle: '믿음으로 걷는 길',
   scripture: '히브리서 11:1-6',
+  scriptureRef: { ...defaultScriptureRef },
   pastor: '김목사',
   orderOfWorship: [
     { order: 1, item: '예배의 부름', detail: '사회자' },
@@ -41,6 +117,8 @@ function Bulletin({ isAdmin }) {
   const [data, setData] = useState(defaultData);
   const [bulletinId, setBulletinId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [scriptureRef, setScriptureRef] = useState(() => parseScriptureRef(defaultData.scripture));
+  const [showScriptureModal, setShowScriptureModal] = useState(false);
 
   useEffect(() => {
     fetch('/api/bulletin')
@@ -51,7 +129,15 @@ function Bulletin({ isAdmin }) {
       .then((saved) => {
         if (saved && saved._id) {
           const { _id, __v, createdAt, updatedAt, ...fields } = saved;
-          setData(fields);
+          const nextScriptureRef = fields.scriptureRef
+            ? { ...defaultScriptureRef, ...fields.scriptureRef }
+            : parseScriptureRef(fields.scripture);
+          setData({
+            ...defaultData,
+            ...fields,
+            scriptureRef: nextScriptureRef,
+          });
+          setScriptureRef(nextScriptureRef);
           setBulletinId(_id);
         }
       })
@@ -90,6 +176,16 @@ function Bulletin({ isAdmin }) {
   // 기본 필드 변경
   const updateField = (field, value) => {
     setData({ ...data, [field]: value });
+  };
+
+  const updateScriptureRef = (patch) => {
+    const next = { ...scriptureRef, ...patch };
+    if (comparePosition(next.startChapter, next.startVerse, next.endChapter, next.endVerse) > 0) {
+      next.endChapter = next.startChapter;
+      next.endVerse = next.startVerse;
+    }
+    setScriptureRef(next);
+    setData({ ...data, scripture: formatScriptureRef(next), scriptureRef: next });
   };
 
   // 예배 순서 변경
@@ -184,14 +280,109 @@ function Bulletin({ isAdmin }) {
             <label>설교 제목</label>
             <input className="edit-input" value={data.sermonTitle} onChange={(e) => updateField('sermonTitle', e.target.value)} />
             <label>성경 본문</label>
-            <input className="edit-input" value={data.scripture} onChange={(e) => updateField('scripture', e.target.value)} />
+            <div className="scripture-input-row">
+              <input className="edit-input" value={data.scripture} readOnly />
+            </div>
+            <div className="scripture-selects">
+              {(() => {
+                const book = getBookByName(scriptureRef.book);
+                const chapters = getChapters(book);
+                const safeStartChapter = chapters.includes(scriptureRef.startChapter) ? scriptureRef.startChapter : chapters[0];
+                const startVerses = getVerses(book, safeStartChapter);
+                const safeStartVerse = startVerses.includes(scriptureRef.startVerse) ? scriptureRef.startVerse : startVerses[0];
+                const safeEndChapter = chapters.includes(scriptureRef.endChapter) ? scriptureRef.endChapter : safeStartChapter;
+                const endVerses = getVerses(book, safeEndChapter);
+                const safeEndVerse = endVerses.includes(scriptureRef.endVerse) ? scriptureRef.endVerse : endVerses[0];
+                return (
+                  <>
+                    <select
+                      className="bible-select"
+                      value={book.name}
+                      onChange={(e) => {
+                        const nextBook = e.target.value;
+                        const nextBookData = getBookByName(nextBook);
+                        const nextChapters = getChapters(nextBookData);
+                        const nextStartChapter = nextChapters[0] || '1';
+                        const nextStartVerses = getVerses(nextBookData, nextStartChapter);
+                        const nextStartVerse = nextStartVerses[0] || '1';
+                        updateScriptureRef({
+                          book: nextBook,
+                          startChapter: nextStartChapter,
+                          startVerse: nextStartVerse,
+                          endChapter: nextStartChapter,
+                          endVerse: nextStartVerse,
+                        });
+                      }}
+                    >
+                      {bibleBooks.map((b) => (
+                        <option key={b.name} value={b.name}>{b.name}</option>
+                      ))}
+                    </select>
+                    <select
+                      className="bible-select"
+                      value={safeStartChapter}
+                      onChange={(e) => {
+                        const nextChapter = e.target.value;
+                        const nextVerses = getVerses(book, nextChapter);
+                        const nextVerse = nextVerses[0] || '1';
+                        updateScriptureRef({ startChapter: nextChapter, startVerse: nextVerse });
+                      }}
+                    >
+                      {chapters.map((chapter) => (
+                        <option key={chapter} value={chapter}>{chapter}장</option>
+                      ))}
+                    </select>
+                    <select
+                      className="bible-select"
+                      value={safeStartVerse}
+                      onChange={(e) => updateScriptureRef({ startVerse: e.target.value })}
+                    >
+                      {startVerses.map((verse) => (
+                        <option key={verse} value={verse}>{verse}절</option>
+                      ))}
+                    </select>
+                    <span className="scripture-range-sep">~</span>
+                    <select
+                      className="bible-select"
+                      value={safeEndChapter}
+                      onChange={(e) => {
+                        const nextChapter = e.target.value;
+                        const nextVerses = getVerses(book, nextChapter);
+                        const nextVerse = nextVerses[0] || '1';
+                        updateScriptureRef({ endChapter: nextChapter, endVerse: nextVerse });
+                      }}
+                    >
+                      {chapters.map((chapter) => (
+                        <option key={chapter} value={chapter}>{chapter}장</option>
+                      ))}
+                    </select>
+                    <select
+                      className="bible-select"
+                      value={safeEndVerse}
+                      onChange={(e) => updateScriptureRef({ endVerse: e.target.value })}
+                    >
+                      {endVerses.map((verse) => (
+                        <option key={verse} value={verse}>{verse}절</option>
+                      ))}
+                    </select>
+                  </>
+                );
+              })()}
+            </div>
             <label>설교자</label>
             <input className="edit-input" value={data.pastor} onChange={(e) => updateField('pastor', e.target.value)} />
           </div>
         ) : (
           <div className="sermon-detail">
             <p className="sermon-title">"{data.sermonTitle}"</p>
-            <p className="sermon-scripture">본문: {data.scripture}</p>
+            <p className="sermon-scripture">
+              본문: {data.scripture}
+              <button className="btn-scripture-view inline" onClick={() => setShowScriptureModal(true)} type="button" aria-label="본문 보기">
+                <svg viewBox="0 0 24 24" className="icon-eye" aria-hidden="true">
+                  <path d="M12 5c-5 0-9.27 3.11-11 7 1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                </svg>
+              </button>
+            </p>
             <p className="sermon-pastor">설교: {data.pastor}</p>
           </div>
         )}
@@ -313,6 +504,21 @@ function Bulletin({ isAdmin }) {
           </>
         )}
       </div>
+      {showScriptureModal && (
+        <div className="modal-overlay" onClick={() => setShowScriptureModal(false)}>
+          <div className="modal-content scripture-modal" onClick={(e) => e.stopPropagation()}>
+            <h4 className="scripture-modal-title">{data.scripture}</h4>
+            <div className="scripture-modal-body">
+              {collectPassage(scriptureRef).map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
+            <div className="modal-actions">
+              <button className="modal-btn-confirm" onClick={() => setShowScriptureModal(false)}>닫기</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
