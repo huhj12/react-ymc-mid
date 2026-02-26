@@ -185,7 +185,7 @@ function Bulletin({ isAdmin }) {
       next.endVerse = next.startVerse;
     }
     setScriptureRef(next);
-    setData({ ...data, scripture: formatScriptureRef(next), scriptureRef: next });
+    setData({ ...data, scriptureRef: next });
   };
 
   // 예배 순서 변경
@@ -281,7 +281,7 @@ function Bulletin({ isAdmin }) {
             <input className="edit-input" value={data.sermonTitle} onChange={(e) => updateField('sermonTitle', e.target.value)} />
             <label>성경 본문</label>
             <div className="scripture-input-row">
-              <input className="edit-input" value={data.scripture} readOnly />
+              <input className="edit-input" value={data.scripture} onChange={(e) => updateField('scripture', e.target.value)} />
             </div>
             <div className="scripture-selects">
               {(() => {
