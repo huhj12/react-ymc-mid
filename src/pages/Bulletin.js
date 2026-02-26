@@ -1,5 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import './Bulletin.css';
+import bibleData from '../data/bible.json';
+
+const bibleBooks = [
+  ...(bibleData['구약'] || []),
+  ...(bibleData['신약'] || []),
+];
+
+const defaultBibleRef = {
+  book: '창세기',
+  chapter: '1',
+  verse: '1',
+};
+
+const getBookByName = (name) => bibleBooks.find((book) => book.name === name) || bibleBooks[0];
+const getChapters = (book) => Object.keys((book && book.chapters) || {});
+const getVerses = (book, chapter) => Object.keys((book && book.chapters && book.chapters[chapter]) || {});
+const formatBibleRef = (bibleRef) => {
+  if (!bibleRef || !bibleRef.book || !bibleRef.chapter || !bibleRef.verse) return '';
+  return `${bibleRef.book} ${bibleRef.chapter}:${bibleRef.verse}-${bibleRef.verse}`;
+};
 
 const defaultData = {
   churchName: '사랑의 교회',
@@ -9,15 +29,15 @@ const defaultData = {
   scripture: '히브리서 11:1-6',
   pastor: '김목사',
   orderOfWorship: [
-    { order: 1, item: '예배의 부름', detail: '사회자' },
-    { order: 2, item: '찬송', detail: '찬송가 21장' },
-    { order: 3, item: '기도', detail: '대표기도: 이OO 집사' },
-    { order: 4, item: '성경봉독', detail: '히브리서 11:1-6' },
-    { order: 5, item: '찬양', detail: '찬양팀' },
-    { order: 6, item: '설교', detail: '믿음으로 걷는 길 - 김목사' },
-    { order: 7, item: '봉헌', detail: '찬송가 50장' },
-    { order: 8, item: '광고', detail: '사회자' },
-    { order: 9, item: '축도', detail: '김목사' },
+    { order: 1, item: '예배의 부름', detail: '사회자', useBible: false, bible: { ...defaultBibleRef } },
+    { order: 2, item: '찬송', detail: '찬송가 21장', useBible: false, bible: { ...defaultBibleRef } },
+    { order: 3, item: '기도', detail: '대표기도: 이OO 집사', useBible: false, bible: { ...defaultBibleRef } },
+    { order: 4, item: '성경봉독', detail: '히브리서 11:1-6', useBible: true, bible: { ...defaultBibleRef } },
+    { order: 5, item: '찬양', detail: '찬양팀', useBible: false, bible: { ...defaultBibleRef } },
+    { order: 6, item: '설교', detail: '믿음으로 걷는 길 - 김목사', useBible: false, bible: { ...defaultBibleRef } },
+    { order: 7, item: '봉헌', detail: '찬송가 50장', useBible: false, bible: { ...defaultBibleRef } },
+    { order: 8, item: '광고', detail: '사회자', useBible: false, bible: { ...defaultBibleRef } },
+    { order: 9, item: '축도', detail: '김목사', useBible: false, bible: { ...defaultBibleRef } },
   ],
   announcements: [
     '수요 예배: 매주 수요일 저녁 7시 30분',
@@ -51,7 +71,18 @@ function Bulletin({ isAdmin }) {
       .then((saved) => {
         if (saved && saved._id) {
           const { _id, __v, createdAt, updatedAt, ...fields } = saved;
-          setData(fields);
+          const normalized = {
+            ...defaultData,
+            ...fields,
+            orderOfWorship: (fields.orderOfWorship || defaultData.orderOfWorship).map((item, i) => ({
+              order: item.order ?? i + 1,
+              item: item.item ?? '',
+              detail: item.detail ?? '',
+              useBible: !!item.useBible,
+              bible: { ...defaultBibleRef, ...(item.bible || {}) },
+            })),
+          };
+          setData(normalized);
           setBulletinId(_id);
         }
       })
@@ -95,7 +126,19 @@ function Bulletin({ isAdmin }) {
   // 예배 순서 변경
   const updateWorship = (index, field, value) => {
     const updated = [...data.orderOfWorship];
-    updated[index] = { ...updated[index], [field]: value };
+    if (field === 'useBible') {
+      const currentBible = updated[index].bible || { ...defaultBibleRef };
+      updated[index] = { ...updated[index], useBible: value, bible: currentBible };
+    } else {
+      updated[index] = { ...updated[index], [field]: value };
+    }
+    setData({ ...data, orderOfWorship: updated });
+  };
+
+  const updateWorshipBible = (index, patch) => {
+    const updated = [...data.orderOfWorship];
+    const currentBible = updated[index].bible || { ...defaultBibleRef };
+    updated[index] = { ...updated[index], bible: { ...currentBible, ...patch } };
     setData({ ...data, orderOfWorship: updated });
   };
 
@@ -103,7 +146,10 @@ function Bulletin({ isAdmin }) {
     const nextOrder = data.orderOfWorship.length + 1;
     setData({
       ...data,
-      orderOfWorship: [...data.orderOfWorship, { order: nextOrder, item: '', detail: '' }],
+      orderOfWorship: [
+        ...data.orderOfWorship,
+        { order: nextOrder, item: '', detail: '', useBible: false, bible: { ...defaultBibleRef } },
+      ],
     });
   };
 
@@ -212,7 +258,18 @@ function Bulletin({ isAdmin }) {
           <tbody>
             {data.orderOfWorship.map((item, index) => (
               <tr key={item.order}>
-                <td className="order-number">{item.order}</td>
+                <td className="order-number">
+                  <span>{item.order}</span>
+                  {isAdmin && (
+                    <input
+                      className="order-checkbox"
+                      type="checkbox"
+                      checked={!!item.useBible}
+                      onChange={(e) => updateWorship(index, 'useBible', e.target.checked)}
+                      title="성경 본문 사용"
+                    />
+                  )}
+                </td>
                 <td>
                   {isAdmin ? (
                     <input className="edit-input-inline" value={item.item} onChange={(e) => updateWorship(index, 'item', e.target.value)} />
@@ -220,8 +277,65 @@ function Bulletin({ isAdmin }) {
                 </td>
                 <td className="order-detail">
                   {isAdmin ? (
-                    <input className="edit-input-inline" value={item.detail} onChange={(e) => updateWorship(index, 'detail', e.target.value)} />
-                  ) : item.detail}
+                    item.useBible ? (
+                      (() => {
+                        const bibleRef = { ...defaultBibleRef, ...(item.bible || {}) };
+                        const book = getBookByName(bibleRef.book);
+                        const chapters = getChapters(book);
+                        const safeChapter = chapters.includes(bibleRef.chapter) ? bibleRef.chapter : chapters[0];
+                        const verses = getVerses(book, safeChapter);
+                        const safeVerse = verses.includes(bibleRef.verse) ? bibleRef.verse : verses[0];
+                        return (
+                          <div className="bible-selects">
+                            <select
+                              className="bible-select"
+                              value={book.name}
+                              onChange={(e) => {
+                                const nextBook = e.target.value;
+                                const nextBookData = getBookByName(nextBook);
+                                const nextChapters = getChapters(nextBookData);
+                                const nextChapter = nextChapters[0] || '1';
+                                const nextVerses = getVerses(nextBookData, nextChapter);
+                                const nextVerse = nextVerses[0] || '1';
+                                updateWorshipBible(index, { book: nextBook, chapter: nextChapter, verse: nextVerse });
+                              }}
+                            >
+                              {bibleBooks.map((b) => (
+                                <option key={b.name} value={b.name}>{b.name}</option>
+                              ))}
+                            </select>
+                            <select
+                              className="bible-select"
+                              value={safeChapter}
+                              onChange={(e) => {
+                                const nextChapter = e.target.value;
+                                const nextVerses = getVerses(book, nextChapter);
+                                const nextVerse = nextVerses[0] || '1';
+                                updateWorshipBible(index, { chapter: nextChapter, verse: nextVerse });
+                              }}
+                            >
+                              {chapters.map((chapter) => (
+                                <option key={chapter} value={chapter}>{chapter}</option>
+                              ))}
+                            </select>
+                            <select
+                              className="bible-select"
+                              value={safeVerse}
+                              onChange={(e) => updateWorshipBible(index, { verse: e.target.value })}
+                            >
+                              {verses.map((verse) => (
+                                <option key={verse} value={verse}>{verse}</option>
+                              ))}
+                            </select>
+                          </div>
+                        );
+                      })()
+                    ) : (
+                      <input className="edit-input-inline" value={item.detail} onChange={(e) => updateWorship(index, 'detail', e.target.value)} />
+                    )
+                  ) : (
+                    item.useBible ? formatBibleRef(item.bible || defaultBibleRef) : item.detail
+                  )}
                 </td>
                 {isAdmin && (
                   <td className="col-action">

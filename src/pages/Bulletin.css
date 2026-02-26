@@ -124,12 +124,41 @@
   text-align: center;
   font-weight: 600;
   color: #667eea;
-  width: 50px;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .order-detail {
   color: #666;
   font-size: 13px;
+}
+
+.order-checkbox {
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #667eea;
+  transform: translateY(1px);
+}
+
+.bible-selects {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bible-select {
+  padding: 4px 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: white;
 }
 
 /* 공지사항 */

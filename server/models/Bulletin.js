@@ -4,6 +4,12 @@ const worshipItemSchema = new mongoose.Schema({
   order: { type: Number, required: true },
   item: { type: String, required: true },
   detail: { type: String, default: '' },
+  useBible: { type: Boolean, default: false },
+  bible: {
+    book: { type: String, default: '창세기' },
+    chapter: { type: String, default: '1' },
+    verse: { type: String, default: '1' },
+  },
 });
 
 const scheduleItemSchema = new mongoose.Schema({
