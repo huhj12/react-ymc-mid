@@ -1,40 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './Bulletin.css';
-import bibleData from '../data/bible.json';
-
-const bibleBooks = [
-  ...(bibleData['구약'] || []),
-  ...(bibleData['신약'] || []),
-];
-
-const defaultScriptureRef = {
-  book: '창세기',
-  chapter: '1',
-  verse: '1',
-};
-
-const getBookByName = (name) => bibleBooks.find((book) => book.name === name) || bibleBooks[0];
-const getChapters = (book) => Object.keys((book && book.chapters) || {});
-const getVerses = (book, chapter) => Object.keys((book && book.chapters && book.chapters[chapter]) || {});
-const formatBibleRef = (ref) => {
-  if (!ref || !ref.book || !ref.chapter || !ref.verse) return '';
-  return `${ref.book} ${ref.chapter}:${ref.verse}-${ref.verse}`;
-};
-
-const parseScriptureRef = (text) => {
-  if (!text) return { ...defaultScriptureRef };
-  const trimmed = text.trim();
-  const matchedBook = bibleBooks.find((b) => trimmed.startsWith(b.name));
-  if (!matchedBook) return { ...defaultScriptureRef };
-  const rest = trimmed.slice(matchedBook.name.length).trim();
-  const match = rest.match(/(\d+)\s*:\s*(\d+)/);
-  if (!match) return { ...defaultScriptureRef, book: matchedBook.name };
-  return {
-    book: matchedBook.name,
-    chapter: match[1],
-    verse: match[2],
-  };
-};
 
 const defaultData = {
   churchName: '사랑의 교회',
@@ -76,7 +41,6 @@ function Bulletin({ isAdmin }) {
   const [data, setData] = useState(defaultData);
   const [bulletinId, setBulletinId] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [scriptureRef, setScriptureRef] = useState(() => parseScriptureRef(defaultData.scripture));
 
   useEffect(() => {
     fetch('/api/bulletin')
@@ -88,7 +52,6 @@ function Bulletin({ isAdmin }) {
         if (saved && saved._id) {
           const { _id, __v, createdAt, updatedAt, ...fields } = saved;
           setData(fields);
-          setScriptureRef(parseScriptureRef(fields.scripture));
           setBulletinId(_id);
         }
       })
@@ -127,9 +90,6 @@ function Bulletin({ isAdmin }) {
   // 기본 필드 변경
   const updateField = (field, value) => {
     setData({ ...data, [field]: value });
-    if (field === 'scripture') {
-      setScriptureRef(parseScriptureRef(value));
-    }
   };
 
   // 예배 순서 변경
@@ -224,68 +184,7 @@ function Bulletin({ isAdmin }) {
             <label>설교 제목</label>
             <input className="edit-input" value={data.sermonTitle} onChange={(e) => updateField('sermonTitle', e.target.value)} />
             <label>성경 본문</label>
-            <input className="edit-input" value={data.scripture} disabled />
-            <div className="scripture-selects">
-              {(() => {
-                const book = getBookByName(scriptureRef.book);
-                const chapters = getChapters(book);
-                const safeChapter = chapters.includes(scriptureRef.chapter) ? scriptureRef.chapter : chapters[0];
-                const verses = getVerses(book, safeChapter);
-                const safeVerse = verses.includes(scriptureRef.verse) ? scriptureRef.verse : verses[0];
-                return (
-                  <>
-                    <select
-                      className="bible-select"
-                      value={book.name}
-                      onChange={(e) => {
-                        const nextBook = e.target.value;
-                        const nextBookData = getBookByName(nextBook);
-                        const nextChapters = getChapters(nextBookData);
-                        const nextChapter = nextChapters[0] || '1';
-                        const nextVerses = getVerses(nextBookData, nextChapter);
-                        const nextVerse = nextVerses[0] || '1';
-                        const nextRef = { book: nextBook, chapter: nextChapter, verse: nextVerse };
-                        setScriptureRef(nextRef);
-                        updateField('scripture', formatBibleRef(nextRef));
-                      }}
-                    >
-                      {bibleBooks.map((b) => (
-                        <option key={b.name} value={b.name}>{b.name}</option>
-                      ))}
-                    </select>
-                    <select
-                      className="bible-select"
-                      value={safeChapter}
-                      onChange={(e) => {
-                        const nextChapter = e.target.value;
-                        const nextVerses = getVerses(book, nextChapter);
-                        const nextVerse = nextVerses[0] || '1';
-                        const nextRef = { book: book.name, chapter: nextChapter, verse: nextVerse };
-                        setScriptureRef(nextRef);
-                        updateField('scripture', formatBibleRef(nextRef));
-                      }}
-                    >
-                      {chapters.map((chapter) => (
-                        <option key={chapter} value={chapter}>{chapter}</option>
-                      ))}
-                    </select>
-                    <select
-                      className="bible-select"
-                      value={safeVerse}
-                      onChange={(e) => {
-                        const nextRef = { book: book.name, chapter: safeChapter, verse: e.target.value };
-                        setScriptureRef(nextRef);
-                        updateField('scripture', formatBibleRef(nextRef));
-                      }}
-                    >
-                      {verses.map((verse) => (
-                        <option key={verse} value={verse}>{verse}</option>
-                      ))}
-                    </select>
-                  </>
-                );
-              })()}
-            </div>
+            <input className="edit-input" value={data.scripture} onChange={(e) => updateField('scripture', e.target.value)} />
             <label>설교자</label>
             <input className="edit-input" value={data.pastor} onChange={(e) => updateField('pastor', e.target.value)} />
           </div>
