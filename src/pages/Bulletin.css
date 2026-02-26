@@ -124,11 +124,7 @@
   text-align: center;
   font-weight: 600;
   color: #667eea;
-  width: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  width: 50px;
 }
 
 .order-detail {
@@ -136,30 +132,6 @@
   font-size: 13px;
 }
 
-.order-checkbox {
-  cursor: pointer;
-  width: 14px;
-  height: 14px;
-  margin: 0;
-  accent-color: #667eea;
-  transform: translateY(1px);
-}
-
-.bible-selects {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.bible-select {
-  padding: 4px 6px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 12px;
-  font-family: 'Noto Sans KR', sans-serif;
-  background: white;
-}
 
 /* 공지사항 */
 .announcement-list {
@@ -253,6 +225,14 @@
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
 }
 
+.edit-input:disabled {
+  background: #f3f4f6;
+  color: #9aa0a6;
+  border-color: #e0e3e7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 /* 헤더 영역 편집 인풋 */
 .edit-header-lg {
   font-size: 22px;
@@ -325,6 +305,22 @@
   font-weight: 600;
   color: #667eea;
   margin-top: 4px;
+}
+
+.scripture-selects {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bible-select {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: white;
 }
 
 /* 리스트 편집 (공지사항) */
