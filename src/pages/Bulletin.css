@@ -26,6 +26,15 @@
   box-shadow: 0 24px 60px rgba(28, 24, 20, 0.08);
 }
 
+.bulletin-header.is-draggable {
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.bulletin-header.is-draggable:active {
+  cursor: grabbing;
+}
+
 .bulletin-header::after {
   content: 'WORSHIP';
   position: absolute;
@@ -37,6 +46,23 @@
   line-height: 0.84;
   letter-spacing: 0.06em;
   color: rgba(23, 21, 21, 0.06);
+  pointer-events: none;
+}
+
+.bulletin-header.game-mode {
+  padding: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(178, 74, 47, 0.18), transparent 24%),
+    linear-gradient(180deg, rgba(23, 21, 21, 0.96), rgba(34, 28, 25, 0.98));
+}
+
+.bulletin-header.game-mode::after {
+  content: '';
+}
+
+.bulletin-header-drag-glow {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
 }
 
@@ -85,6 +111,295 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.trex-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.trex-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  color: #fff6ee;
+}
+
+.trex-topbar h3 {
+  margin: 2px 0 0;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.trex-label {
+  margin: 0;
+  color: rgba(255, 241, 232, 0.62);
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: 0.74rem;
+  font-variation-settings: 'wght' 620, 'wdth' 112;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.trex-close-btn,
+.trex-start-btn {
+  border: none;
+  border-radius: 999px;
+  background: #fff2e8;
+  color: #171515;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.trex-close-btn {
+  padding: 10px 14px;
+}
+
+.trex-arena {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 243, 234, 0.12);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.08), rgba(255, 251, 246, 0.02)),
+    linear-gradient(180deg, rgba(41, 34, 31, 0.12), rgba(41, 34, 31, 0.3));
+  outline: none;
+}
+
+.trex-arena::before {
+  content: 'RUNNER';
+  position: absolute;
+  right: 18px;
+  top: 14px;
+  color: rgba(255, 246, 239, 0.08);
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: clamp(3rem, 8vw, 5.2rem);
+  font-variation-settings: 'wght' 760, 'wdth' 90;
+  letter-spacing: 0.1em;
+}
+
+.trex-score,
+.trex-status {
+  position: absolute;
+  left: 22px;
+  z-index: 2;
+  color: #fff6ee;
+}
+
+.trex-score {
+  top: 18px;
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: 0.86rem;
+  font-variation-settings: 'wght' 680, 'wdth' 108;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.trex-status {
+  top: 48px;
+  max-width: 260px;
+  color: rgba(255, 241, 232, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.trex-flash-message {
+  position: absolute;
+  left: 22px;
+  top: 92px;
+  z-index: 2;
+  color: #ffd7c6;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.trex-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 58px;
+  height: 2px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 240, 228, 0.82) 0 28px, transparent 28px 42px);
+}
+
+.trex-dino {
+  position: absolute;
+  left: 64px;
+  bottom: 58px;
+  width: 44px;
+  height: 52px;
+  transition: transform 0.05s linear;
+}
+
+.trex-dino-body {
+  position: absolute;
+  inset: 0 10px 10px 0;
+  border: 2px solid #fff2e8;
+  border-radius: 8px 8px 4px 4px;
+  background: rgba(255, 242, 232, 0.08);
+}
+
+.trex-dino-eye {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff2e8;
+}
+
+.trex-dino-leg {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 12px;
+  background: #fff2e8;
+}
+
+.trex-dino-leg.front {
+  left: 14px;
+}
+
+.trex-dino-leg.back {
+  left: 26px;
+}
+
+.trex-obstacle {
+  position: absolute;
+  bottom: 58px;
+  border: 2px solid #fff2e8;
+  border-radius: 6px 6px 0 0;
+  background: rgba(255, 242, 232, 0.08);
+}
+
+.trex-obstacle::before,
+.trex-obstacle::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  border-top: 2px solid #fff2e8;
+}
+
+.trex-obstacle::before {
+  left: -6px;
+  top: 12px;
+}
+
+.trex-obstacle::after {
+  right: -6px;
+  top: 24px;
+}
+
+.trex-actions {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trex-secondary-btn,
+.trex-start-btn {
+  padding: 12px 18px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+}
+
+.trex-secondary-btn {
+  border: 1px solid rgba(255, 242, 232, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 242, 232, 0.08);
+  color: #fff6ee;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.trex-secondary-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.trex-modal {
+  width: min(92vw, 420px);
+}
+
+.trex-save-modal {
+  width: min(92vw, 360px);
+}
+
+.trex-modal-title {
+  margin: 0 0 12px;
+  color: #171515;
+  font-size: 1.28rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.trex-save-score {
+  margin: 0 0 14px;
+  color: rgba(23, 21, 21, 0.64);
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+.trex-modal-error {
+  margin: 10px 0 0;
+  color: #b24a2f;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.leaderboard-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leaderboard-item,
+.leaderboard-empty {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(23, 21, 21, 0.08);
+}
+
+.leaderboard-list li:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-rank {
+  color: #b24a2f;
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-weight: 700;
+}
+
+.leaderboard-name {
+  color: #171515;
+}
+
+.leaderboard-score {
+  color: #171515;
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+}
+
+.leaderboard-empty {
+  display: block;
+  color: rgba(23, 21, 21, 0.56);
+  text-align: center;
 }
 
 .bulletin-section {
@@ -451,6 +766,7 @@
   .bulletin-section {
     padding: 20px 18px 18px;
   }
+
 }
 
 @media (max-width: 720px) {
@@ -461,6 +777,26 @@
   .bulletin-header::after {
     font-size: 4.4rem;
     right: 0;
+  }
+
+  .trex-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .trex-arena {
+    height: 240px;
+  }
+
+  .trex-status {
+    max-width: 200px;
+  }
+
+  .trex-actions {
+    left: 18px;
+    right: 18px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
   }
 
   .worship-order-table,
