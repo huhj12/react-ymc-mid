@@ -9,7 +9,7 @@ const TAB_COPY = {
   bulletin: {
     kicker: 'Weekly Bulletin',
     display: 'BEULAH',
-    title: '쁄라 학생회',
+    title: '',
     description:
       '언제나, 어떤 상황에서도 주님께 순종',
   },
