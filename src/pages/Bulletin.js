@@ -318,6 +318,11 @@ function TrexRunnerMiniGame({ onClose }) {
     }
   };
 
+  const handleArenaButtonClick = (event, action) => {
+    event.stopPropagation();
+    action();
+  };
+
   return (
     <>
       <div className="trex-shell">
@@ -326,9 +331,9 @@ function TrexRunnerMiniGame({ onClose }) {
             <p className="trex-label">Bulletin Header</p>
             <h3>T-Rex Runner Mode</h3>
           </div>
-          <button className="trex-close-btn" type="button" onClick={onClose}>
-            닫기
-          </button>
+        <button className="trex-close-btn" type="button" onClick={onClose}>
+          닫기
+        </button>
         </div>
         <div className="trex-arena" ref={arenaRef} onClick={handleAction} role="button" tabIndex={0}>
           <div className="trex-score">score {currentScore}</div>
@@ -361,16 +366,20 @@ function TrexRunnerMiniGame({ onClose }) {
               <button
                 className="trex-secondary-btn"
                 type="button"
-                onClick={handleOpenSaveModal}
+                onClick={(event) => handleArenaButtonClick(event, handleOpenSaveModal)}
                 disabled={didSaveCurrentScore}
               >
                 {didSaveCurrentScore ? '저장됨' : '저장'}
               </button>
             )}
-            <button className="trex-secondary-btn" type="button" onClick={() => loadLeaderboard(true)}>
+            <button
+              className="trex-secondary-btn"
+              type="button"
+              onClick={(event) => handleArenaButtonClick(event, () => loadLeaderboard(true))}
+            >
               점수판
             </button>
-            <button className="trex-start-btn" type="button" onClick={handleAction}>
+            <button className="trex-start-btn" type="button" onClick={(event) => handleArenaButtonClick(event, handleAction)}>
               {phase === 'idle' ? '게임 시작' : phase === 'gameover' ? '다시 시작' : '점프'}
             </button>
           </div>
