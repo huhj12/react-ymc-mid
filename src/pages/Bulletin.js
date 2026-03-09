@@ -110,11 +110,13 @@ const defaultData = {
 };
 
 function TrexRunnerMiniGame({ onClose }) {
+  const GAME_WIDTH = 760;
+  const GAME_HEIGHT = 280;
   const arenaRef = useRef(null);
   const frameRef = useRef(null);
   const lastTimeRef = useRef(0);
   const obstacleIdRef = useRef(0);
-  const [arenaWidth, setArenaWidth] = useState(760);
+  const [viewportWidth, setViewportWidth] = useState(GAME_WIDTH);
   const [phase, setPhase] = useState('idle');
   const [game, setGame] = useState({
     y: 0,
@@ -134,6 +136,8 @@ function TrexRunnerMiniGame({ onClose }) {
   const [didSaveCurrentScore, setDidSaveCurrentScore] = useState(false);
 
   const currentScore = Math.floor(game.score);
+  const churchIconSize = 10 + Math.floor(currentScore / 100) * 3;
+  const sceneScale = Math.min(1, viewportWidth / GAME_WIDTH);
 
   const loadLeaderboard = async (openAfterLoad = false) => {
     try {
@@ -157,7 +161,7 @@ function TrexRunnerMiniGame({ onClose }) {
 
   useEffect(() => {
     const updateWidth = () => {
-      if (arenaRef.current) setArenaWidth(arenaRef.current.offsetWidth);
+      if (arenaRef.current) setViewportWidth(arenaRef.current.offsetWidth);
     };
 
     updateWidth();
@@ -186,7 +190,7 @@ function TrexRunnerMiniGame({ onClose }) {
           velocity = 0;
         }
 
-        const speed = prev.speed + delta * 10;
+        const speed = prev.speed + delta * 4;
         let spawnTimer = prev.spawnTimer - delta;
         let obstacles = prev.obstacles
           .map((obstacle) => ({ ...obstacle, x: obstacle.x - speed * delta }))
@@ -198,7 +202,7 @@ function TrexRunnerMiniGame({ onClose }) {
             ...obstacles,
             {
               id: obstacleIdRef.current,
-              x: arenaWidth + 40,
+              x: GAME_WIDTH + 40,
               width: 18 + Math.random() * 18,
               height: 28 + Math.random() * 30,
             },
@@ -234,7 +238,7 @@ function TrexRunnerMiniGame({ onClose }) {
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
       lastTimeRef.current = 0;
     };
-  }, [arenaWidth, phase]);
+  }, [phase]);
 
   const startGame = () => {
     lastTimeRef.current = 0;
@@ -329,13 +333,39 @@ function TrexRunnerMiniGame({ onClose }) {
         <div className="trex-topbar">
           <div>
             <p className="trex-label">Bulletin Header</p>
-            <h3>T-Rex Runner Mode</h3>
+            <h3>용인중앙교회로 달리기 모드</h3>
           </div>
         <button className="trex-close-btn" type="button" onClick={onClose}>
           닫기
         </button>
         </div>
-        <div className="trex-arena" ref={arenaRef} onClick={handleAction} role="button" tabIndex={0}>
+        <div
+          className="trex-arena"
+          ref={arenaRef}
+          onClick={handleAction}
+          role="button"
+          tabIndex={0}
+          style={{ height: `${GAME_HEIGHT * sceneScale}px` }}
+        >
+          <div
+            className="trex-scene"
+            style={{
+              width: `${GAME_WIDTH}px`,
+              height: `${GAME_HEIGHT}px`,
+              transform: `scale(${sceneScale})`,
+            }}
+          >
+          <div
+            className="trex-church-icon"
+            style={{ width: `${churchIconSize}px`, height: `${churchIconSize}px` }}
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 64 64">
+              <path d="M30 2h4v10h8v4h-8v14h-4V16h-8v-4h8z" />
+              <path d="M14 58V28l18-12 18 12v30h-8V34H22v24z" />
+              <path d="M27 58V42h10v16z" />
+            </svg>
+          </div>
           <div className="trex-score">score {currentScore}</div>
           <div className="trex-status">
             {phase === 'idle' && '시작 버튼 또는 스페이스바'}
@@ -382,6 +412,7 @@ function TrexRunnerMiniGame({ onClose }) {
             <button className="trex-start-btn" type="button" onClick={(event) => handleArenaButtonClick(event, handleAction)}>
               {phase === 'idle' ? '게임 시작' : phase === 'gameover' ? '다시 시작' : '점프'}
             </button>
+          </div>
           </div>
         </div>
       </div>

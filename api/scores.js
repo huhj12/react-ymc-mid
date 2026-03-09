@@ -7,11 +7,23 @@ async function getTopScores() {
   return Score.find().sort({ score: -1, createdAt: 1 }).limit(LEADERBOARD_LIMIT);
 }
 
+async function trimScores() {
+  const overflow = await Score.find()
+    .sort({ score: -1, createdAt: 1 })
+    .skip(LEADERBOARD_LIMIT)
+    .select('_id');
+
+  if (overflow.length > 0) {
+    await Score.deleteMany({ _id: { $in: overflow.map((entry) => entry._id) } });
+  }
+}
+
 module.exports = async (req, res) => {
   await connectDB();
 
   if (req.method === 'GET') {
     try {
+      await trimScores();
       const scores = await getTopScores();
       res.json(scores);
     } catch (err) {
@@ -40,6 +52,7 @@ module.exports = async (req, res) => {
         score: Math.floor(score),
       });
 
+      await trimScores();
       const leaderboard = await getTopScores();
 
       res.status(201).json({
