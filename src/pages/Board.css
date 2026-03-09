@@ -49,6 +49,14 @@
   background-color: #5a6fd6;
 }
 
+.micro-pop {
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.micro-pop:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
 /* 테이블 */
 .board-table {
   width: 100%;
@@ -187,6 +195,21 @@
   background-color: #ee5a5a;
 }
 
+.btn-edit {
+  padding: 10px 24px;
+  background-color: #667eea;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-edit:hover {
+  background-color: #5a6fd6;
+}
+
 /* 글쓰기 화면 */
 .write-title {
   font-size: 22px;
@@ -237,6 +260,43 @@
   resize: vertical;
 }
 
+.input-error {
+  border-color: #ef4444 !important;
+  background: #fff8f8;
+}
+
+.input-success {
+  border-color: #10b981 !important;
+  background: #f5fffb;
+}
+
+.form-feedback {
+  margin: 6px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.form-feedback.error {
+  color: #ef4444;
+}
+
+.form-feedback.success {
+  color: #059669;
+}
+
+.form-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.char-count {
+  font-size: 12px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -272,6 +332,49 @@
 
 .btn-submit:hover {
   background-color: #5a6fd6;
+}
+
+.board-skeleton {
+  display: inline-block;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #eef1f7 25%, #f7f9fd 50%, #eef1f7 75%);
+  background-size: 220% 100%;
+  animation: skeleton-wave 1.3s ease-in-out infinite;
+}
+
+.skeleton-row td {
+  cursor: default;
+}
+
+.skeleton-line {
+  width: 100%;
+  height: 14px;
+}
+
+.skeleton-line.short {
+  width: 60%;
+}
+
+.skeleton-line.medium {
+  width: 75%;
+}
+
+.skeleton-line.long {
+  width: 95%;
+}
+
+.skeleton-pill {
+  width: 42px;
+  height: 16px;
+}
+
+@keyframes skeleton-wave {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -20% 0;
+  }
 }
 
 /* 반응형 */

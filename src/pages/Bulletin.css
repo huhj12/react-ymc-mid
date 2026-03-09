@@ -1,178 +1,225 @@
 .bulletin-loading {
+  padding: 72px 20px;
   text-align: center;
-  padding: 80px 20px;
-  font-size: 16px;
-  color: #888;
+  color: rgba(23, 21, 21, 0.56);
+  font-size: 0.98rem;
+  letter-spacing: 0.04em;
 }
 
 .bulletin-container {
-  max-width: 700px;
+  max-width: 1040px;
   margin: 0 auto;
-  padding: 20px;
-  font-family: 'Noto Sans KR', sans-serif;
+  padding: 8px 0 36px;
+  color: #171515;
 }
 
-/* 헤더 */
 .bulletin-header {
-  text-align: center;
-  padding: 30px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 12px;
-  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 18px;
+  padding: 38px 34px 34px;
+  border: 1px solid rgba(23, 21, 21, 0.08);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at top right, rgba(178, 74, 47, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(255, 252, 246, 0.94), rgba(250, 244, 235, 0.92));
+  box-shadow: 0 24px 60px rgba(28, 24, 20, 0.08);
+}
+
+.bulletin-header::after {
+  content: 'WORSHIP';
+  position: absolute;
+  right: -0.06em;
+  top: 0.04em;
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: clamp(4rem, 14vw, 8rem);
+  font-variation-settings: 'wght' 760, 'wdth' 82, 'slnt' -8;
+  line-height: 0.84;
+  letter-spacing: 0.06em;
+  color: rgba(23, 21, 21, 0.06);
+  pointer-events: none;
 }
 
 .church-symbol {
-  font-size: 40px;
-  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 14px;
+  color: #b24a2f;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
 .church-name {
-  font-size: 28px;
-  margin: 0 0 8px 0;
-  font-weight: 700;
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  font-weight: 900;
 }
 
 .bulletin-date {
-  font-size: 14px;
-  opacity: 0.9;
-  margin: 0 0 12px 0;
+  position: relative;
+  z-index: 1;
+  margin: 14px 0 10px;
+  color: rgba(23, 21, 21, 0.6);
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: 0.88rem;
+  font-variation-settings: 'wght' 540, 'wdth' 110;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .worship-title {
-  font-size: 20px;
+  position: relative;
+  z-index: 1;
+  max-width: 540px;
   margin: 0;
-  font-weight: 500;
-  letter-spacing: 2px;
+  color: #b24a2f;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-/* 섹션 공통 */
 .bulletin-section {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 14px;
+  padding: 24px 24px 20px;
+  border: 1px solid rgba(23, 21, 21, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 252, 246, 0.86);
+  box-shadow: 0 16px 40px rgba(28, 24, 20, 0.05);
 }
 
 .section-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #4a4a8a;
-  margin: 0 0 16px 0;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #667eea;
+  margin: 0 0 18px;
+  color: #171515;
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-variation-settings: 'wght' 680, 'wdth' 110;
+  letter-spacing: -0.03em;
 }
 
-/* 설교 정보 */
 .sermon-info {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background:
+    linear-gradient(180deg, rgba(255, 248, 241, 0.98), rgba(255, 252, 246, 0.88)),
+    rgba(255, 252, 246, 0.86);
 }
 
 .sermon-detail {
-  text-align: center;
+  display: grid;
+  gap: 10px;
 }
 
 .sermon-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 8px 0;
-}
-
-.sermon-scripture {
-  font-size: 15px;
-  color: #555;
-  margin: 0 0 4px 0;
-}
-
-.sermon-pastor {
-  font-size: 14px;
-  color: #777;
   margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  font-weight: 800;
 }
 
-/* 예배 순서 테이블 */
+.sermon-scripture,
+.sermon-pastor {
+  margin: 0;
+  color: rgba(23, 21, 21, 0.72);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
 .worship-order-table,
 .weekly-schedule-table {
   width: 100%;
   border-collapse: collapse;
 }
 
+.worship-order-table thead,
+.weekly-schedule-table thead {
+  border-bottom: 1px solid rgba(23, 21, 21, 0.12);
+}
+
 .worship-order-table th,
 .weekly-schedule-table th {
-  background-color: #667eea;
-  color: white;
-  padding: 10px 12px;
+  padding: 0 12px 12px;
+  color: rgba(23, 21, 21, 0.54);
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: 0.78rem;
+  font-variation-settings: 'wght' 580, 'wdth' 112;
+  letter-spacing: 0.16em;
   text-align: left;
-  font-size: 14px;
+  text-transform: uppercase;
 }
 
 .worship-order-table td,
 .weekly-schedule-table td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(23, 21, 21, 0.08);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  vertical-align: top;
 }
 
-.worship-order-table tr:hover,
-.weekly-schedule-table tr:hover {
-  background-color: #f8f9ff;
+.worship-order-table tbody tr:last-child td,
+.weekly-schedule-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.worship-order-table tbody tr:hover,
+.weekly-schedule-table tbody tr:hover {
+  background: rgba(178, 74, 47, 0.04);
 }
 
 .order-number {
+  width: 60px;
+  color: #b24a2f;
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  font-variation-settings: 'wght' 700, 'wdth' 95;
   text-align: center;
-  font-weight: 600;
-  color: #667eea;
-  width: 50px;
 }
 
 .order-detail {
-  color: #666;
-  font-size: 13px;
+  color: rgba(23, 21, 21, 0.64);
 }
 
-
-/* 공지사항 */
 .announcement-list {
-  list-style: none;
-  padding: 0;
+  display: grid;
+  gap: 12px;
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .announcement-list li {
-  padding: 10px 12px;
-  border-left: 3px solid #667eea;
-  margin-bottom: 8px;
-  background-color: #f8f9ff;
-  border-radius: 0 6px 6px 0;
-  font-size: 14px;
-  color: #444;
+  padding: 14px 16px;
+  border-left: 3px solid #b24a2f;
+  background: rgba(178, 74, 47, 0.05);
+  border-radius: 0 18px 18px 0;
+  color: rgba(23, 21, 21, 0.84);
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
-/* 하단 */
 .bulletin-footer {
+  padding: 22px 10px 0;
+  color: rgba(23, 21, 21, 0.5);
   text-align: center;
-  padding: 20px;
-  color: #999;
-  font-size: 12px;
-  border-top: 1px solid #eee;
-  margin-top: 20px;
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: 0.82rem;
+  font-variation-settings: 'wght' 450, 'wdth' 108;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .bulletin-footer p {
   margin: 4px 0;
 }
 
-/* 로딩 */
-.bulletin-loading {
-  text-align: center;
-  padding: 60px 20px;
-  font-size: 16px;
-  color: #888;
-}
-
-/* ===== 관리자 모드 ===== */
 .admin-save-bar {
   display: flex;
   justify-content: flex-end;
@@ -182,122 +229,92 @@
 }
 
 .admin-badge {
-  background: #ff6b6b;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #171515;
+  color: #fff7f0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .btn-admin-save {
-  padding: 8px 20px;
-  background: #51cf66;
-  color: white;
+  padding: 10px 18px;
   border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 999px;
+  background: #b24a2f;
+  color: #fff7f0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-.btn-admin-save:hover {
-  background: #40c057;
+.edit-input,
+.edit-input-inline,
+.bible-select {
+  border: 1px solid rgba(23, 21, 21, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #171515;
+  font: inherit;
 }
 
-/* 편집 인풋 공통 */
 .edit-input {
   width: 100%;
-  padding: 8px 12px;
-  border: 2px solid rgba(102, 126, 234, 0.4);
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: 'Noto Sans KR', sans-serif;
-  background: rgba(255, 255, 255, 0.95);
-  transition: border-color 0.2s;
-  box-sizing: border-box;
+  padding: 12px 14px;
 }
 
-.edit-input:focus {
+.edit-input:focus,
+.edit-input-inline:focus,
+.bible-select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  border-color: rgba(178, 74, 47, 0.44);
+  box-shadow: 0 0 0 4px rgba(178, 74, 47, 0.08);
 }
 
-
-/* 헤더 영역 편집 인풋 */
 .edit-header-lg {
-  font-size: 22px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-.edit-header-lg:focus {
-  border-color: white;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
-}
-
-.edit-header-md {
-  font-size: 18px;
-  font-weight: 500;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-.edit-header-md:focus {
-  border-color: white;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+  margin-bottom: 10px;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
 }
 
 .edit-header-sm {
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border-color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 10px;
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.edit-header-sm:focus {
-  border-color: white;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+.edit-header-md {
+  color: #b24a2f;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-/* 테이블 내 인라인 편집 */
 .edit-input-inline {
   width: 100%;
-  padding: 4px 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 13px;
-  font-family: 'Noto Sans KR', sans-serif;
-  box-sizing: border-box;
+  padding: 8px 10px;
+  font-size: 0.94rem;
 }
 
-.edit-input-inline:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-/* 편집 그룹 (설교 정보 등) */
 .edit-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: grid;
+  gap: 8px;
 }
 
 .edit-group label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #667eea;
-  margin-top: 4px;
+  color: rgba(23, 21, 21, 0.54);
+  font-family: 'Roboto Flex', 'Segoe UI', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .scripture-input-row {
@@ -311,26 +328,17 @@
 }
 
 .btn-scripture-view {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: 1px solid #d8dcf2;
-  background: white;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(23, 21, 21, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
-}
-
-.btn-scripture-view:hover {
-  background: #f2f4ff;
-  border-color: #bfc7f5;
 }
 
 .btn-scripture-view.inline {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   margin-left: 8px;
   vertical-align: middle;
 }
@@ -338,66 +346,55 @@
 .icon-eye {
   width: 18px;
   height: 18px;
-  fill: #667eea;
+  fill: #b24a2f;
 }
 
 .scripture-selects {
   display: flex;
-  gap: 6px;
-  align-items: center;
   flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 
 .scripture-range-sep {
-  font-size: 12px;
-  color: #777;
-  padding: 0 2px;
+  color: rgba(23, 21, 21, 0.48);
+  font-size: 0.9rem;
 }
 
 .bible-select {
-  padding: 6px 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 12px;
-  font-family: 'Noto Sans KR', sans-serif;
-  background: white;
+  padding: 10px 12px;
 }
 
 .scripture-modal {
-  width: 520px;
-  max-width: 92vw;
+  width: min(92vw, 560px);
 }
 
 .scripture-modal-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.3;
   text-align: center;
-  color: #333;
 }
 
 .scripture-modal-body {
-  max-height: 320px;
+  max-height: 340px;
   overflow: auto;
-  padding: 10px 12px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  background: #fafbff;
+  padding: 14px 16px;
+  border: 1px solid rgba(23, 21, 21, 0.08);
+  border-radius: 18px;
+  background: rgba(178, 74, 47, 0.04);
 }
 
 .scripture-modal-body p {
-  margin: 0 0 8px 0;
-  font-size: 13px;
-  color: #333;
-  line-height: 1.5;
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  line-height: 1.7;
 }
 
-
-/* 리스트 편집 (공지사항) */
 .edit-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  gap: 10px;
 }
 
 .edit-list-item {
@@ -410,57 +407,75 @@
   flex: 1;
 }
 
-/* 추가/삭제 버튼 */
 .btn-add {
-  display: block;
   width: 100%;
-  padding: 8px;
-  margin-top: 10px;
-  background: #f8f9ff;
-  color: #667eea;
-  border: 2px dashed #667eea;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 12px 14px;
+  border: 1px dashed rgba(178, 74, 47, 0.44);
+  border-radius: 16px;
+  background: rgba(178, 74, 47, 0.05);
+  color: #b24a2f;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-add:hover {
-  background: #667eea;
-  color: white;
-  border-style: solid;
 }
 
 .btn-remove {
-  width: 30px;
-  height: 30px;
-  background: #ff6b6b;
-  color: white;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
   border: none;
-  border-radius: 50%;
-  font-size: 16px;
+  border-radius: 999px;
+  background: #171515;
+  color: #fff7f0;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: background-color 0.2s;
-}
-
-.btn-remove:hover {
-  background: #ee5a5a;
 }
 
 .col-action {
-  width: 50px;
+  width: 56px;
   text-align: center;
 }
 
-/* 하단 편집 */
 .edit-footer {
+  margin-bottom: 8px;
   text-align: center;
-  font-size: 12px;
-  margin-bottom: 6px;
+}
+
+@media (max-width: 900px) {
+  .bulletin-header {
+    padding: 28px 22px 24px;
+  }
+
+  .bulletin-section {
+    padding: 20px 18px 18px;
+  }
+}
+
+@media (max-width: 720px) {
+  .bulletin-container {
+    padding-bottom: 20px;
+  }
+
+  .bulletin-header::after {
+    font-size: 4.4rem;
+    right: 0;
+  }
+
+  .worship-order-table,
+  .weekly-schedule-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .sermon-title {
+    font-size: 1.8rem;
+  }
+
+  .announcement-list li,
+  .worship-order-table td,
+  .weekly-schedule-table td {
+    font-size: 0.92rem;
+  }
 }

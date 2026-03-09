@@ -251,7 +251,7 @@ function Bulletin({ isAdmin }) {
 
       {/* 주보 헤더 */}
       <div className="bulletin-header">
-        <div className="church-symbol">✝</div>
+        <div className="church-symbol"></div>
         {isAdmin ? (
           <>
             <input className="edit-input edit-header-lg" value={data.churchName} onChange={(e) => updateField('churchName', e.target.value)} />

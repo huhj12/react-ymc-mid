@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import bibleData from '../data/bible.json';
 import Toast from '../components/Toast';
 import './BibleSearch.css';
@@ -177,7 +178,9 @@ function BibleSearch() {
 
   return (
     <div className="bible-container">
-      {toast && <Toast message={toast} onClose={() => setToast('')} />}
+      <AnimatePresence initial={false}>
+        {toast && <Toast message={toast} onClose={() => setToast('')} />}
+      </AnimatePresence>
       <h2 className="bible-title">성경 검색</h2>
 
       {/* 모드 탭 - 구절 찾기 먼저 */}
