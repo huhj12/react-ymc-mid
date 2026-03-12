@@ -1,3 +1,12 @@
+:root {
+  --board-accent: #b24a2f;
+  --board-accent-strong: #973c24;
+  --board-accent-soft: #fff6f0;
+  --board-accent-soft-2: #fdf1e8;
+  --board-border-soft: rgba(178, 74, 47, 0.18);
+  --board-text-muted: #8d7b74;
+}
+
 .board-loading {
   text-align: center;
   padding: 60px 20px;
@@ -36,7 +45,7 @@
 /* 버튼 공통 */
 .btn-write {
   padding: 10px 20px;
-  background-color: #667eea;
+  background-color: var(--board-accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -46,7 +55,7 @@
 }
 
 .btn-write:hover {
-  background-color: #5a6fd6;
+  background-color: var(--board-accent-strong);
 }
 
 .micro-pop {
@@ -68,7 +77,7 @@
 }
 
 .board-table thead th {
-  background-color: #667eea;
+  background-color: var(--board-accent);
   color: white;
   padding: 12px 16px;
   font-size: 14px;
@@ -88,7 +97,7 @@
 }
 
 .post-row:hover {
-  background-color: #f8f9ff;
+  background-color: var(--board-accent-soft);
 }
 
 .col-no {
@@ -197,7 +206,7 @@
 
 .btn-edit {
   padding: 10px 24px;
-  background-color: #667eea;
+  background-color: var(--board-accent);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -207,7 +216,7 @@
 }
 
 .btn-edit:hover {
-  background-color: #5a6fd6;
+  background-color: var(--board-accent-strong);
 }
 
 /* 글쓰기 화면 */
@@ -252,8 +261,8 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--board-accent);
+  box-shadow: 0 0 0 3px rgba(178, 74, 47, 0.12);
 }
 
 .form-group textarea {
@@ -293,7 +302,7 @@
 
 .char-count {
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--board-text-muted);
   white-space: nowrap;
 }
 
@@ -321,7 +330,7 @@
 
 .btn-submit {
   padding: 10px 24px;
-  background-color: #667eea;
+  background-color: var(--board-accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -331,13 +340,13 @@
 }
 
 .btn-submit:hover {
-  background-color: #5a6fd6;
+  background-color: var(--board-accent-strong);
 }
 
 .board-skeleton {
   display: inline-block;
   border-radius: 8px;
-  background: linear-gradient(90deg, #eef1f7 25%, #f7f9fd 50%, #eef1f7 75%);
+  background: linear-gradient(90deg, #f4e7df 25%, #fffaf6 50%, #f4e7df 75%);
   background-size: 220% 100%;
   animation: skeleton-wave 1.3s ease-in-out infinite;
 }

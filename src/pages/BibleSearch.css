@@ -1,4 +1,9 @@
 .bible-container {
+  --bible-accent: #b24a2f;
+  --bible-accent-strong: #973c24;
+  --bible-accent-soft: #fff6f0;
+  --bible-accent-soft-2: #fdf1e8;
+  --bible-accent-shadow: rgba(178, 74, 47, 0.12);
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -34,12 +39,12 @@
 }
 
 .bible-mode-btn:hover {
-  color: #667eea;
+  color: var(--bible-accent);
 }
 
 .bible-mode-btn.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
+  color: var(--bible-accent);
+  border-bottom-color: var(--bible-accent);
 }
 
 /* 섹션 */
@@ -73,7 +78,7 @@
 
 .bible-select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--bible-accent);
 }
 
 .bible-book-info {
@@ -88,7 +93,7 @@
   gap: 6px;
   margin-bottom: 20px;
   padding: 12px;
-  background: #f8f9ff;
+  background: var(--bible-accent-soft);
   border-radius: 8px;
 }
 
@@ -109,14 +114,14 @@
 }
 
 .bible-chapter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
-  background: #f0f2ff;
+  border-color: var(--bible-accent);
+  color: var(--bible-accent);
+  background: var(--bible-accent-soft-2);
 }
 
 .bible-chapter-btn.active {
-  background: #667eea;
-  border-color: #667eea;
+  background: var(--bible-accent);
+  border-color: var(--bible-accent);
   color: white;
   font-weight: 700;
 }
@@ -157,16 +162,16 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
-  accent-color: #667eea;
+  accent-color: var(--bible-accent);
   flex-shrink: 0;
 }
 
 .bible-copy-btn {
   margin-left: auto;
   padding: 5px 14px;
-  background: #f0f2ff;
-  color: #667eea;
-  border: 1px solid #667eea;
+  background: var(--bible-accent-soft-2);
+  color: var(--bible-accent);
+  border: 1px solid var(--bible-accent);
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
@@ -175,18 +180,18 @@
 }
 
 .bible-copy-btn:hover {
-  background: #667eea;
+  background: var(--bible-accent);
   color: white;
 }
 
 .bible-copy-selected-btn {
   margin-left: 0;
-  background: #667eea;
+  background: var(--bible-accent);
   color: white;
 }
 
 .bible-copy-selected-btn:hover {
-  background: #5a6fd6;
+  background: var(--bible-accent-strong);
 }
 
 .bible-deselect-btn {
@@ -232,12 +237,12 @@
 
 .bible-range-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--bible-accent);
 }
 
 .bible-range-btn {
   padding: 7px 14px;
-  background: #667eea;
+  background: var(--bible-accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -248,7 +253,7 @@
 }
 
 .bible-range-btn:hover {
-  background: #5a6fd6;
+  background: var(--bible-accent-strong);
 }
 
 .bible-range-hint {
@@ -275,7 +280,7 @@
 }
 
 .bible-verse-item.checked {
-  background: #f0f2ff;
+  background: var(--bible-accent-soft);
   border-radius: 6px;
 }
 
@@ -284,7 +289,7 @@
   height: 15px;
   margin-top: 6px;
   cursor: pointer;
-  accent-color: #667eea;
+  accent-color: var(--bible-accent);
   flex-shrink: 0;
 }
 
@@ -296,7 +301,7 @@
   flex-shrink: 0;
   width: 26px;
   height: 26px;
-  background: #667eea;
+  background: var(--bible-accent);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -329,9 +334,9 @@
 }
 
 .bible-verse-copy-btn:hover {
-  background: #667eea;
+  background: var(--bible-accent);
   color: white;
-  border-color: #667eea;
+  border-color: var(--bible-accent);
 }
 
 /* 키워드 검색 */
@@ -355,13 +360,13 @@
 
 .bible-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--bible-accent);
+  box-shadow: 0 0 0 3px var(--bible-accent-shadow);
 }
 
 .bible-btn-search {
   padding: 10px 20px;
-  background: #667eea;
+  background: var(--bible-accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -373,7 +378,7 @@
 }
 
 .bible-btn-search:hover {
-  background: #5a6fd6;
+  background: var(--bible-accent-strong);
 }
 
 .bible-result-header {
@@ -381,7 +386,7 @@
   color: #555;
   margin-bottom: 12px;
   padding: 8px 12px;
-  background: #f8f9ff;
+  background: var(--bible-accent-soft);
   border-radius: 6px;
 }
 
@@ -412,14 +417,14 @@
 }
 
 .bible-result-item:hover {
-  background-color: #f8f9ff;
+  background-color: var(--bible-accent-soft);
 }
 
 .bible-ref {
   flex-shrink: 0;
   font-size: 13px;
   font-weight: 600;
-  color: #667eea;
+  color: var(--bible-accent);
   min-width: 100px;
 }
 
@@ -451,13 +456,13 @@
 }
 
 .bible-page-btn:hover:not(:disabled) {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: var(--bible-accent);
+  color: var(--bible-accent);
 }
 
 .bible-page-btn.active {
-  background: #667eea;
-  border-color: #667eea;
+  background: var(--bible-accent);
+  border-color: var(--bible-accent);
   color: white;
   font-weight: 700;
 }
