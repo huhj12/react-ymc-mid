@@ -44,6 +44,7 @@
 
 /* 섹션 */
 .bible-section {
+  box-sizing: border-box;
   background: white;
   border-radius: 10px;
   padding: 24px;
@@ -338,10 +339,12 @@
   display: flex;
   gap: 8px;
   margin-bottom: 16px;
+  min-width: 0;
 }
 
 .bible-input {
   flex: 1;
+  min-width: 0;
   padding: 10px 14px;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -473,6 +476,22 @@
 
 /* 반응형 */
 @media (max-width: 600px) {
+  .bible-container {
+    padding: 16px;
+  }
+
+  .bible-section {
+    padding: 18px 16px;
+  }
+
+  .bible-search-form {
+    flex-direction: column;
+  }
+
+  .bible-btn-search {
+    width: 100%;
+  }
+
   .bible-chapter-btn {
     width: 32px;
     height: 32px;

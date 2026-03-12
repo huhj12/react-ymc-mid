@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
+import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
 import './Bulletin.css';
 import bibleData from '../data/bible.json';
 
@@ -475,6 +475,78 @@ function TrexRunnerMiniGame({ onClose }) {
   );
 }
 
+function SkeletonBlock({ className }) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      className={`bulletin-skeleton-block ${className || ''}`}
+      aria-hidden="true"
+      animate={
+        shouldReduceMotion
+          ? undefined
+          : {
+              backgroundPosition: ['200% 0', '-200% 0'],
+            }
+      }
+      transition={
+        shouldReduceMotion
+          ? undefined
+          : {
+              duration: 1.8,
+              repeat: Infinity,
+              ease: 'linear',
+            }
+      }
+    />
+  );
+}
+
+function BulletinSkeleton() {
+  return (
+    <div className="bulletin-container bulletin-skeleton" aria-label="주보 불러오는 중" aria-busy="true">
+      <div className="bulletin-header bulletin-skeleton-header">
+        <SkeletonBlock className="skeleton-symbol" />
+        <SkeletonBlock className="skeleton-title-lg" />
+        <SkeletonBlock className="skeleton-title-sm" />
+        <SkeletonBlock className="skeleton-title-md" />
+      </div>
+
+      <div className="bulletin-section">
+        <SkeletonBlock className="skeleton-section-title" />
+        <SkeletonBlock className="skeleton-text-line" />
+        <SkeletonBlock className="skeleton-text-line skeleton-text-line-wide" />
+        <SkeletonBlock className="skeleton-text-line skeleton-text-line-short" />
+      </div>
+
+      <div className="bulletin-section">
+        <SkeletonBlock className="skeleton-section-title" />
+        <div className="bulletin-skeleton-table">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className="bulletin-skeleton-row">
+              <SkeletonBlock className="skeleton-cell skeleton-cell-number" />
+              <SkeletonBlock className="skeleton-cell" />
+              <SkeletonBlock className="skeleton-cell skeleton-cell-wide" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bulletin-section">
+        <SkeletonBlock className="skeleton-section-title" />
+        <div className="bulletin-skeleton-list">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <SkeletonBlock
+              key={index}
+              className={`skeleton-list-item ${index % 2 === 0 ? 'skeleton-list-item-wide' : ''}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Bulletin({ isAdmin }) {
   const [data, setData] = useState(defaultData);
   const [bulletinId, setBulletinId] = useState(null);
@@ -622,7 +694,7 @@ function Bulletin({ isAdmin }) {
     animate(headerX, 0, { type: 'spring', stiffness: 360, damping: 30 });
   };
 
-  if (loading) return <div className="bulletin-loading">주보를 불러오는 중...</div>;
+  if (loading) return <BulletinSkeleton />;
 
   return (
     <div className="bulletin-container">
